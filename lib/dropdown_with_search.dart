@@ -13,8 +13,9 @@ class DropdownWithSearch<T> extends StatelessWidget {
   final double? searchBarRadius;
   final double? dialogRadius;
   final bool disabled;
+  final EdgeInsetsGeometry? padding;
   final String label;
-
+  final Widget? prefixIcon;
   final Function onChanged;
 
   const DropdownWithSearch(
@@ -32,8 +33,9 @@ class DropdownWithSearch<T> extends StatelessWidget {
       this.disabledDecoration,
       this.searchBarRadius,
       this.dialogRadius,
+      this.padding,
       required this.label,
-      this.disabled = false})
+      this.disabled = false,  this.prefixIcon})
       : super(key: key);
 
   @override
@@ -65,7 +67,7 @@ class DropdownWithSearch<T> extends StatelessWidget {
           });
         },
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          padding: padding ?? EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           decoration: !disabled
               ? decoration != null
                   ? decoration
@@ -83,11 +85,17 @@ class DropdownWithSearch<T> extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                  child: Text(selected.toString(),
-                      overflow: TextOverflow.ellipsis,
-                      style: selectedItemStyle != null
-                          ? selectedItemStyle
-                          : TextStyle(fontSize: 14))),
+                  child: Row(
+                    children: [
+                      prefixIcon?? SizedBox(),
+                      SizedBox(width: 4,),
+                      Text(selected.toString(),
+                          overflow: TextOverflow.ellipsis,
+                          style: selectedItemStyle != null
+                              ? selectedItemStyle
+                              : TextStyle(fontSize: 14)),
+                    ],
+                  )),
               Icon(Icons.keyboard_arrow_down_rounded)
             ],
           ),
@@ -177,7 +185,10 @@ class _SearchDialogState<T> extends State<SearchDialog> {
                   ),
                 ),
                 IconButton(
-                    icon: Icon(Icons.close),
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.grey,
+                    ),
                     onPressed: () {
                       FocusScope.of(context).unfocus();
                       Navigator.pop(context);
@@ -207,6 +218,8 @@ class _SearchDialogState<T> extends State<SearchDialog> {
                   isDense: true,
                   prefixIcon: Icon(Icons.search),
                   hintText: widget.placeHolder,
+                  hintStyle: TextStyle(color: Colors.grey),
+                  fillColor: Colors.grey,
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
                         widget.searchInputRadius != null

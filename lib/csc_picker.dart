@@ -545,7 +545,7 @@ class CSCPicker extends StatefulWidget {
     this.countryDropdownLabel = "Country",
     this.stateDropdownLabel = "State",
     this.cityDropdownLabel = "City",
-    this.countryFilter,
+    this.countryFilter,  this.countryIcon,  this.stateIcon,  this.contentPadding,  this.cityIcon,
   }) : super(key: key);
 
   final ValueChanged<String>? onCountryChanged;
@@ -576,6 +576,10 @@ class CSCPicker extends StatefulWidget {
   final String countryDropdownLabel;
   final String stateDropdownLabel;
   final String cityDropdownLabel;
+  final Widget? countryIcon;
+  final Widget? stateIcon;
+  final Widget? cityIcon;
+  final EdgeInsetsGeometry? contentPadding;
 
   final List<CscCountry>? countryFilter;
 
@@ -643,7 +647,7 @@ class CSCPickerState extends State<CSCPicker> {
     if (_countryFilter.isNotEmpty) {
       _countryFilter.forEach((element) {
         var result = countries[Countries[element]!];
-        if(result!=null) addCountryToList(result);
+        if (result != null) addCountryToList(result);
       });
     } else {
       countries.forEach((data) {
@@ -884,11 +888,13 @@ class CSCPickerState extends State<CSCPicker> {
       dropdownHeadingStyle: widget.dropdownHeadingStyle,
       itemStyle: widget.dropdownItemStyle,
       decoration: widget.dropdownDecoration,
+      padding: widget.contentPadding,
       disabledDecoration: widget.disabledDropdownDecoration,
       disabled: _country.length == 0 || widget.disableCountry ? true : false,
       dialogRadius: widget.dropdownDialogRadius,
       searchBarRadius: widget.searchBarRadius,
       label: widget.countrySearchPlaceholder,
+      prefixIcon: widget.countryIcon,
       items: _country.map((String? dropDownStringItem) {
         return dropDownStringItem;
       }).toList(),
@@ -919,6 +925,7 @@ class CSCPickerState extends State<CSCPicker> {
       dropdownHeadingStyle: widget.dropdownHeadingStyle,
       itemStyle: widget.dropdownItemStyle,
       decoration: widget.dropdownDecoration,
+      prefixIcon: widget.stateIcon,
       dialogRadius: widget.dropdownDialogRadius,
       searchBarRadius: widget.searchBarRadius,
       disabledDecoration: widget.disabledDropdownDecoration,
@@ -948,6 +955,7 @@ class CSCPickerState extends State<CSCPicker> {
       itemStyle: widget.dropdownItemStyle,
       decoration: widget.dropdownDecoration,
       dialogRadius: widget.dropdownDialogRadius,
+      prefixIcon: widget.countryIcon,
       searchBarRadius: widget.searchBarRadius,
       disabledDecoration: widget.disabledDropdownDecoration,
       selected: _selectedCity,
